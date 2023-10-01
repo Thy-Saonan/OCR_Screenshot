@@ -38,7 +38,6 @@ function search(searchTerm){
 
 document.addEventListener("DOMContentLoaded", (event) => {
   document.getElementById("searchInput").addEventListener("input", function(input){
-    console.log(input.target.value)
     search(input.target.value)
   })
   document.getElementById("take_screenshot").onclick = async () => {
