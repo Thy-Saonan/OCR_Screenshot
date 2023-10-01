@@ -35,7 +35,7 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "index.html", "main.js", "style.css","/dist/*"
+        "index.html", "main.js", "style.css","cropper/*"
       ],
       "matches": [
         "http://*/*",
