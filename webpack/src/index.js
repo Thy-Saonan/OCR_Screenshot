@@ -2,7 +2,6 @@
 
 window.addEventListener("message", (event) => {
   const url = event.data;
-  console.log("Hello World From Iframe", url)
   Tesseract.recognize(
     url,
     "eng",

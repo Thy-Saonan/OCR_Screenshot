@@ -25,7 +25,6 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 
 window.addEventListener('message', function(event) {
-  console.log("Message received from the child: " + event.data); // Message received from child
   item = JSON.parse(localStorage.getItem("OCR_TEXT"));
   if(item==null){
     item = []
