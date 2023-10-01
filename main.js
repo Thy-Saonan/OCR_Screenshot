@@ -29,6 +29,7 @@ window.addEventListener('message', function(event) {
   if(item==null){
     item = []
   }
-  item.push(event.data);
+  const withoutLineBreaks = event.data.replace(/[\r\n]/gm, '');
+  item.push(withoutLineBreaks);
   localStorage.setItem("OCR_TEXT", JSON.stringify(item));
 });

@@ -2,25 +2,24 @@
 
 <head>
   <style>
-    html{
+    html {
       width: 640px;
-    }
-    * {
-      font-size: x-large;
-    }
-    .btn{
-      color: white;
-      background-color: blue;
-      width: 300px;
-      padding: 10px;
-      border-radius: 10px;
+      padding: 5px;
     }
   </style>
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
-  <button id="take_screenshot" class="btn">Take Screenshot</button>
-  <h5>Tip: Double click on screenshot to toggle between dragging cropper and screenshot</h5>
-  <ul id="notes"></ul>
+  <button id="take_screenshot" type="button" class="btn btn-lg btn-success">Take Screenshot</button>
+  <p><b>Tip:</b> Double click on screenshot to toggle between dragging cropper and screenshot</p>
+  <div id="list-group">
+    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+      Text From OCR
+    </a>
+  </div>
   <script src="popup.js"></script>
+  <script src="bootstrap/js/bootstrap.bundle.min.js" rel="stylesheet"></script>
 </body>
+
 </html>

@@ -3,11 +3,19 @@ let notes = JSON.parse(localStorage.getItem("OCR_TEXT"))
 if(notes==null){
   notes = []
 }
-let noteList = document.querySelector("#notes")
+let listGroup = document.querySelector("#list-group")
 notes.forEach(note => {
-  let li = document.createElement("li")
-  li.innerText = note
-  noteList.appendChild(li)
+  let a = document.createElement("a");
+  a.setAttribute("href", "#");
+  a.setAttribute("class", "list-group-item list-group-item-action");
+  a.setAttribute("data-bs-toggle", "tooltip");
+  a.setAttribute("data-bs-placement", "bottom");
+  a.setAttribute("title", "Click to copy");
+  a.onclick = ()=>{
+    navigator.clipboard.writeText(note);
+  }
+  a.innerText = note
+  listGroup.appendChild(a);
 });
 document.getElementById("take_screenshot").onclick = async () => {
   const screenshot = await chrome.tabs.captureVisibleTab();
