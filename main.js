@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', function () {
         cropBoxDim = cropBox.getBoundingClientRect();
         button = document.getElementById("convertText");
         button.removeAttribute("hidden")
-        button.style = `top: ${cropBoxDim.top - button.clientHeight<0?0:cropBoxDim.top - button.clientHeight}px;left:${cropBoxDim.left}px;`
+        button.style = `top: ${cropBoxDim.top - button.clientHeight < 0 ? 0 : cropBoxDim.top - button.clientHeight}px;left:${cropBoxDim.left}px;`
       }
     });
     document.getElementById("close").onclick = () => {
@@ -35,26 +35,46 @@ window.addEventListener('DOMContentLoaded', function () {
       cropper.reset();
     };
 
-    var button = this.document.querySelector("#getText");
+    var button = document.querySelector("#getText");
     button.onclick = function () {
       var crop_image = cropper.getCroppedCanvas().toDataURL('image/jpeg');
       document.getElementById("loading").removeAttribute("hidden");
-      document.getElementById("getText").setAttribute("hidden", "")
-      chrome.runtime.sendMessage({ type: "getText", imageData: crop_image });
+      document.getElementById("getText").setAttribute("hidden", "");
       // Send image to sandbox to process
-      iframe.contentWindow.postMessage(crop_image, "*");
+      iframe.contentWindow.postMessage({ type: "imageProcessing", image: crop_image, lang: window.localStorage.getItem("lang") }, "*");
     };
+    if (window.localStorage.getItem("lang") == null) {
+      window.localStorage.setItem("lang", "eng");
+    }
+    var lang = document.getElementById("lang");
+    lang.innerText = window.localStorage.getItem("lang").toUpperCase();
+    lang.onclick = function () {
+      if (lang.innerText == "ENG") {
+        window.localStorage.setItem("lang", "jpn")
+        lang.innerText = "JPN";
+      } else {
+        window.localStorage.setItem("lang", "eng")
+        lang.innerText = "END";
+      }
+    }
   });
 });
 window.addEventListener('message', function (event) {
-  item = JSON.parse(localStorage.getItem("OCR_TEXT"));
-  if (item == null) {
-    item = []
+  if (event.data.type == "processedText") {
+    item = JSON.parse(localStorage.getItem("OCR_TEXT"));
+    if (item == null) {
+      item = []
+    }
+    const withoutLineBreaks = event.data.text.replace(/[\r\n]/gm, '');
+    item.unshift(withoutLineBreaks);
+    localStorage.setItem("OCR_TEXT", JSON.stringify(item));
+    document.getElementById("getText").removeAttribute("hidden");
+    document.getElementById("loading").setAttribute("hidden", "");
+    alert(event.data.text);
   }
-  const withoutLineBreaks = event.data.replace(/[\r\n]/gm, '');
-  item.unshift(withoutLineBreaks);
-  localStorage.setItem("OCR_TEXT", JSON.stringify(item));
-  document.getElementById("getText").removeAttribute("hidden");
-  document.getElementById("loading").setAttribute("hidden", "");
-  alert(event.data);
+  if (event.data.type == "stopped") {
+    document.getElementById("getText").removeAttribute("hidden");
+    document.getElementById("loading").setAttribute("hidden", "");
+  }
+
 });
