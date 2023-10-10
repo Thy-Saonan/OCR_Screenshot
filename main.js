@@ -54,7 +54,7 @@ window.addEventListener('DOMContentLoaded', function () {
         lang.innerText = "JPN";
       } else {
         window.localStorage.setItem("lang", "eng")
-        lang.innerText = "END";
+        lang.innerText = "ENG";
       }
     }
   });
@@ -66,6 +66,9 @@ window.addEventListener('message', function (event) {
       item = []
     }
     const withoutLineBreaks = event.data.text.replace(/[\r\n]/gm, '');
+    if(!withoutLineBreaks){
+      return;
+    }
     item.unshift(withoutLineBreaks);
     localStorage.setItem("OCR_TEXT", JSON.stringify(item));
     document.getElementById("getText").removeAttribute("hidden");
